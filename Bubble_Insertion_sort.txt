@@ -1,0 +1,216 @@
+
+// Hw_06_Bubble Sort.cpp : Defines the entry point for the console application.
+//
+
+#include "string"
+#include "fstream"
+#include "iomanip"
+#include "Person.h"
+#include "time.h"
+#include "chrono"
+using namespace std;
+
+
+int main()
+{
+	ifstream inputFile;
+	string filename = "Foghat.txt";
+	string line;
+	double d;
+	int a = 0;
+	int i;
+	string val;
+	string str;
+	int count = 0;
+	int p = 20;
+	bool sorted = false;
+	const int noffolks = 88799;
+	Person *person[noffolks];
+	time_t start;
+	time_t end;
+	double timediff;
+	start = clock();
+	inputFile.open(filename);
+	if (inputFile.is_open())
+	{
+		while (!inputFile.eof())
+		{
+			if (count != noffolks)
+			{
+				person[count] = new Person;
+				inputFile >> line;
+				person[count]->setName(line);
+				inputFile >> line;
+				d = atof(line.c_str());
+				person[count]->setDeptId(d);
+				inputFile >> line;
+				d = atof(line.c_str());
+				person[count]->setWage(d);
+				inputFile >> line;
+				i = stoi(line);
+				person[count]->setId(i);
+				inputFile >> line;
+				count++;
+			}
+		}
+	}
+	int j = 0;
+	Person *temp;
+	bool swapped = true;
+	cout << "This program is going to read a very large text file and sort it." << endl;
+	cout << "Which sort would you like to perform? " << endl;
+	cout << "1. Bubble sort " << endl;
+	cout << "2. Insertion sort " << endl;
+	cout << "Enter your selection!" << endl;
+	cin >> a;
+	if (a == 1)
+	{
+		for (j = 1; j < (88799) && swapped; j++)
+		{
+			swapped = false;
+			for (int i = 0; i < (88799 - j); i++)
+			{
+				if (person[i]->getId() > person[i + 1]->getId())
+				{
+
+					temp = person[i];
+					person[i] = person[i + 1];
+					person[i + 1] = temp;
+					swapped = true;
+				}
+			}
+			cout << "pass " << j << endl;
+		}
+		cout << "Bubble Sort" << endl;
+		cout << "=======================================================================" << endl;
+		cout << setw(15) << left << "ID" << setw(15) << "Name" << setw(15) << "Hourly" << endl;
+		cout << "========================================================================" << endl;
+		for (int i = 0; i < 20; i++)
+		{
+			cout << setw(15) << left << person[i]->getId() << setw(15) << person[i]->getName() << setw(15) << person[i]->getWage() << endl;
+		}
+		cout << "LAST FOLK" << setw(15) << left << person[88798]->getId() << setw(15) << person[88798]->getName() << setw(15) << person[88798]->getWage() << endl;
+		end = clock();
+		timediff = (end - start);
+		cout << "It took " << timediff / CLOCKS_PER_SEC << " seconds to complete" << endl;
+		cout << "It took " << ((timediff / CLOCKS_PER_SEC) / 60) << " minutes to complete" << endl;
+	}
+
+	if (a == 2)
+	{
+		j = 0;
+		int t = 0;
+		int k = 0;
+		for (int i = 0; i < (88799); i++)
+		{
+			k = person[i]->getId();
+
+			for (j = i; j < 88798; j++)
+			{
+				if (person[j]->getId() > k)
+				{
+					temp = person[j];
+					person[j] = person[i];
+					person[i] = temp;
+					k = person[i]->getId();
+				}
+			}
+			cout << "Pass: " << i << endl;
+		}
+		cout << "Insert Sort" << endl;
+		cout << "=======================================================================" << endl;
+		cout << setw(15) << left << "ID" << setw(15) << "Name" << setw(15) << "Hourly" << endl;
+		cout << "========================================================================" << endl;
+		for (int i = 0; i < 88799; i++)
+		{
+			cout << setw(15) << left << person[i]->getId() << setw(15) << person[i]->getName() << setw(15) << person[i]->getWage() << endl;
+		}
+		end = clock();
+		timediff = (end - start);
+		cout << "It took " << timediff / CLOCKS_PER_SEC << " seconds to complete" << endl;
+		cout << "It took " << ((timediff / CLOCKS_PER_SEC) / 60) << " minutes to complete" << endl;
+	}
+
+	system("pause");
+	return 0;
+}
+
+////////////////////////////////////////////////////////MAIN
+#include "stdafx.h"
+#include "Person.h"
+
+
+Person::Person()
+{
+}
+
+
+Person::~Person()
+{
+}
+
+void Person::setName(string n)
+{
+	name = n;
+}
+void Person::setDeptId(double i)
+{
+	deptId = i;
+}
+void Person::setId(int i)
+{
+	id = i;
+}
+void Person::setWage(double w)
+{
+	wage = w;
+}
+string  Person::getName()
+{
+	return name;
+}
+double  Person::getDeptId()
+{
+	return deptId;
+}
+int  Person::getId()
+{
+	return id;
+}
+double Person::getWage()
+{
+	return wage;
+}
+
+//////////////////////////////////////////PERSON CPP
+/////
+#pragma once
+#include "iostream"
+#include "string"
+
+using namespace std;
+
+class Person
+{
+private:
+	string name;
+	double deptId;
+	int id;
+	double wage;
+
+public:
+	Person();
+	~Person();
+	void setName(string);
+	void setDeptId(double);
+	void setId(int);
+	void setWage(double);
+	string getName();
+	double getDeptId();
+	int getId();
+	double getWage();
+
+};
+
+
+//////////////////////////////////////////PERSON H
